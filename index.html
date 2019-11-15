@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>wordcube</title>
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Montserrat:700&display=swap" rel="stylesheet">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon-16x16.png">
+    <link rel="manifest" href="/public/images/site.webmanifest">
+
+    <meta name="description" content="" />
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:title" content="wordcube">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="https://nathanielwroblewski.github.com/wordcube/public/images/screenshot.png">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="wordcube" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://nathanielwroblewski.github.com/wordcube" />
+    <meta property="og:image" content="https://nathanielwroblewski.github.com/wordcube/public/images/screenshot.png" />
+    <meta property="og:description" content="" />
+    <meta property="og:site_name" content="wordcube" />
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="wordcube">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="https://nathanielwroblewski.github.com/wordcube/public/images/screenshot.png">
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">WORD CUBE</h1>
+      <p class="subtitle">Boggle on a Rubik's Cube</p>
+      <noscript>
+        <p class="text">This site relies on javascript for proper operation.  Please consider enabling javascript for the full experience.
+        </p>
+      </noscript>
+      <div class="game-container">
+        <canvas width="400" height="400" class="game"></canvas>
+        <h3 class="timer">3:00</h3>
+        <h3 class="current-word"></h3>
+        <h3 class="error">Not in dictionary!</h3>
+        <h3 class="points">score: <span class="score">0</span></h3>
+      </div>
+      <div class="how-to-play">
+        <h3 class="dark header">How to play</h3>
+        <p class="dark text">
+          Score points for each unique, English word with more than two letters submitted
+          before time expires.  Build words by selecting contiguous letters without
+          backtracking.  <i>Spacebar</i> selects a letter; <i>return</i> submits words.
+        </p>
+        <p class="dark text">
+          The faces of the cube may be turned.  When no letters are selected,
+          <i>return</i> cycles through faces, and arrow keys turn
+          selected faces 90&deg;.
+        </p>
+        <p class="dark text">A word's score is the square of its letter count.
+        <h3 class="dark header">Controls</h3>
+        <table>
+          <tbody>
+            <tr><td><i>spacebar</i></td><td>select letter</td></tr>
+            <tr><td><i>return</i> &crarr;</td><td>select face, submit word</td></tr>
+            <tr><td>&#9668;&#9650;&#9660;&#9658;</td><td>move cursor, turn face</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="/public/javascripts/main.js"></script>
+</html>

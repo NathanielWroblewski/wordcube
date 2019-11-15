@@ -1,0 +1,135 @@
+html {
+  font-size: 15px;
+}
+
+html, body {
+  height: 100%;
+  width:  100%;
+  padding: 0;
+  margin:  0;
+  background-color: #fffff8;
+  color: #666;
+  font-family: serif;
+}
+
+.container {
+  width: 400px;
+  margin: 0 auto;
+  padding: 5rem 1rem;
+}
+
+.title {
+  font-weight: 400;
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.subtitle {
+  margin: 0.5rem 0 1rem;
+  font-size: 1.2rem;
+  color: #aaa;
+  font-family: 'Libre Baskerville', serif;
+}
+
+.text {
+  width: 100%;
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
+  vertical-align: baseline;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+a:link, a:visited { color: inherit; }
+
+.game-container {
+  position: relative;
+}
+
+.game {
+  height: 400px;
+  width: 400px;
+  background-color: #eee;
+}
+
+/*.links {
+  margin: 0;
+  padding: 10px 0 0;
+  list-style: none;
+}
+
+.link {
+  width: 100%;
+  vertical-align: baseline;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #aaa;
+}
+
+.link a {
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #666;
+}*/
+
+.timer, .points {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+
+.points {
+  top: 20px;
+}
+
+.current-word, .error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 10px;
+}
+
+.error {
+  color: red;
+  display: none;
+}
+
+.header {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+}
+
+.dark {
+  color: #666;
+}
+
+.light {
+  color: #aaa;
+}
+
+.how-to-play .header {
+  margin: 2em 0 0 0;
+}
+
+.how-to-play .text {
+  margin: 0.5em 0;
+}
+
+table {
+  margin-top: 1em;
+}
+
+th, td {
+  vertical-align: baseline;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+td:first-of-type {
+  width: 120px;
+}
