@@ -9,7 +9,7 @@ import renderTimer from './views/timer.js'
 import renderText from './views/text.js'
 import renderMessage from './views/message.js'
 import { place, stableSort, numCompare, sample, cube } from './utilities/index.js'
-import { DIE, ROTATE_SPEED, SIZE, MIN_WORD_LENGTH } from './constants/index.js'
+import { DIE, ROTATE_SPEED, SIZE, MIN_WORD_LENGTH, CUBOID_FACE_MODE, DICE_FACE_MODE } from './constants/index.js'
 import { LEFT, UP, RIGHT, DOWN, A, B } from './constants/keys.js'
 import {
   INPUT_DIRECTION, RELEASE_DIRECTION, INPUT_LETTER, INPUT_WORD, CYCLE_FACE, TURN_FACE
@@ -32,6 +32,9 @@ const WORD_BANK = []
 // let SELECTED = 0
 
 let points = 0
+
+let mode = DICE_FACE_MODE
+let selectedCuboidFace = 0 // 0 - 5
 
 timer.set({ min: 3 })
 
@@ -106,6 +109,14 @@ controller.on(INPUT_WORD, word => {
   }
 })
 
+controller.on(CYCLE_FACE, () => {
+  mode = CUBOID_FACE_MODE
+  selectedCuboidFace = (selectedCuboidFace + 1) % 6
+})
+// controller.on(TURN_FACE, () => {
+
+// })
+
 // letters logic + neighbors + face
 const isSelectableLetter = (letters, neighbors, face) => {
   return (
@@ -116,9 +127,20 @@ const isSelectableLetter = (letters, neighbors, face) => {
   )
 }
 
+const isHighlightedFace = (mode, face, index, sorted, sortedByCuboidFace) => {
+  switch (mode) {
+    case CUBOID_FACE_MODE:
+      return sortedByCuboidFace.indexOf(face) < 21
+    case DICE_FACE_MODE:
+      return index === sorted.length - 1
+    default:
+      return false
+  }
+}
+
 // game.loop
 const step = () => {
-  element.getContext('2d').clearRect(0, 0, 600, 600)
+  element.getContext('2d').clearRect(0, 0, 400, 400)
 
   faces.forEach((face, index) => {
     if (camera.isPanning(UP)) face.rotateX(ROTATE_SPEED, 1)
@@ -127,6 +149,7 @@ const step = () => {
     if (camera.isPanning(RIGHT)) face.rotateY(ROTATE_SPEED, -1)
   })
 
+  // only recompute when panning
   const sorted = stableSort(faces, (a, b) => {
     const adist = a.center.subtract(camera.position).magnitude
     const bdist = b.center.subtract(camera.position).magnitude
@@ -134,7 +157,19 @@ const step = () => {
     return numCompare(bdist, adist)
   })
 
-  // neighbors
+  // modes cuboid face or die face
+  // face highlighting
+  // may only need to be recomputed on every turn
+  const cuboidFaceCenterIndex = (selectedCuboidFace * 9) + 4
+  const cuboidFaceCenter = faces[cuboidFaceCenterIndex]
+  const sortedByCuboidFace = stableSort(faces, (a, b) => {
+    const adist = a.center.subtract(cuboidFaceCenter.center).magnitude
+    const bdist = b.center.subtract(cuboidFaceCenter.center).magnitude
+
+    return numCompare(bdist, adist)
+  })
+  // end face highlighting
+
   let neighbors = []
 
   if (letters.last) {
@@ -142,9 +177,9 @@ const step = () => {
   }
 
   sorted.forEach((face, index) => {
-    const isHighlighted = index === sorted.length - 1
     const isSelectable = isSelectableLetter(letters, neighbors, face)
     const isSelecting = letters.word.length
+    const isHighlighted = isHighlightedFace(mode, face, index, sorted, sortedByCuboidFace)
 
     renderFace({ element, face, isHighlighted, isSelectable, isSelecting })
   })

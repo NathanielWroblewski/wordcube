@@ -28,15 +28,22 @@ TODO:
   - game.loop
   - clean-up index/object references in letters model
   - clean-up error messaging in word submission, maybe word.isValid, word.error?
+  - licensing/ownership blurb
+  - wordbank could be a trie/hash
+
+  - jazz prints
+  - sheet music
+  - jazz graph
 
 How to Play
 ---
 
-Score points for each unique, English word with more than three letters submitted
-before time expires.  A word's point value is the square of the word's letter
-count. Build a word by selecting individual contiguous letters without
-backtracking.  The A button selects a letter; the B button submits a word.
+Score points for each unique, English word with more than two letters submitted
+before time expires.  Build words by selecting contiguous letters without
+backtracking.  _Spacebar_ selects a letter; _return_ submits words.
 
-The faces of the cube may also be turned.  When no letters have been selected,
-press the B button to toggle available faces, and use the arrow keys to rotate
-the selected face ninety degrees.
+The faces of the cube may be turned.  When no letters are selected,
+_return_ cycles through faces, and arrow keys turn
+selected faces 90°.
+
+A word's score is the square of its letter count.

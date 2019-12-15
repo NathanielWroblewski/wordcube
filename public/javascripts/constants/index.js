@@ -22,3 +22,6 @@ export const ROTATE_SPEED = 0.03
 export const SIZE = 30
 
 export const MIN_WORD_LENGTH = 3
+
+export const CUBOID_FACE_MODE = 0
+export const DICE_FACE_MODE = 1

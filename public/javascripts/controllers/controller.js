@@ -31,6 +31,8 @@ class Controller {
       case LEFT:
       case RIGHT:
         event.preventDefault()
+        // if mode === CUBOID_FACE_MODE
+        // return this.trigger(TURN_FACE, event.keyCode)
         return this.trigger(INPUT_DIRECTION, event.keyCode)
       case A:
         event.preventDefault()
