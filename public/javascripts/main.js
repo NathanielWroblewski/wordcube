@@ -1,20 +1,24 @@
 import Vector from './models/vector.js'
 import Face from './models/face.js'
 import Timer from './models/timer.js'
+import Mode from './models/mode.js'
 import Letters from './models/letters.js'
 import Camera from './models/camera.js'
 import Controller from './controllers/controller.js'
-import renderFace from './views/face.js'
+import renderFaces from './views/faces.js'
 import renderTimer from './views/timer.js'
 import renderText from './views/text.js'
 import renderMessage from './views/message.js'
-import { place, stableSort, numCompare, sample, cube } from './utilities/index.js'
-import { DIE, ROTATE_SPEED, SIZE, MIN_WORD_LENGTH, CUBOID_FACE_MODE, DICE_FACE_MODE } from './constants/index.js'
-import { LEFT, UP, RIGHT, DOWN, A, B } from './constants/keys.js'
-import {
-  INPUT_DIRECTION, RELEASE_DIRECTION, INPUT_LETTER, INPUT_WORD, CYCLE_FACE, TURN_FACE
-} from './constants/events.js'
+import { stableSort, numCompare, sample, cube } from './utilities/index.js'
+import { DIE, ROTATE_SPEED, SIZE, MIN_WORD_LENGTH } from './constants/index.js'
+import { LEFT, UP, RIGHT, DOWN } from './constants/keys.js'
+import { INPUT_DIRECTION, RELEASE_DIRECTION, INPUT_LETTER, INPUT_WORD } from './constants/events.js'
 import { DICTIONARY } from './data/dictionary.js'
+
+// Copyright (c) 2019 Nathaniel Wroblewski
+// I am making my contributions/submissions to this project solely in my personal
+// capacity and am not conveying any rights to any intellectual property of any
+// third parties.
 
 const timerEl = document.querySelector('.timer')
 const wordEl = document.querySelector('.current-word')
@@ -22,19 +26,14 @@ const error = document.querySelector('.error')
 const score = document.querySelector('.score')
 const element = document.querySelector('canvas')
 
-const timer = new Timer()
-const letters = new Letters()
 const camera = new Camera({ position: Vector.from([0, 0, -3]) })
+const letters = new Letters()
+const timer = new Timer()
+const mode = new Mode()
 
 const WORD_BANK = []
 
-// thinking faces modulo dimension? 0, 1, 2, 3 for none, max by x, y, z
-// let SELECTED = 0
-
 let points = 0
-
-let mode = DICE_FACE_MODE
-let selectedCuboidFace = 0 // 0 - 5
 
 timer.set({ min: 3 })
 
@@ -54,9 +53,8 @@ const faces = cube((offset, dimension, flip) => {
   return new Face({ vertices, size: SIZE, letter: sample(dice) })
 })
 
-const controller = new Controller({ input: document, letters, faces, camera })
+const controller = new Controller({ input: document, letters, faces, camera, mode })
 
-// neighbors
 const NEIGHBORS = faces.map(face => {
   const numNeighbors = face.isCorner() ? 8 : 9
 
@@ -109,12 +107,8 @@ controller.on(INPUT_WORD, word => {
   }
 })
 
-controller.on(CYCLE_FACE, () => {
-  mode = CUBOID_FACE_MODE
-  selectedCuboidFace = (selectedCuboidFace + 1) % 6
-})
-// controller.on(TURN_FACE, () => {
-
+// controller.on(CYCLE_FACE, () => {
+//   mode.isDiceFaceMode ? mode.setCuboidFaceMode() : mode.cycleCuboidFace()
 // })
 
 // letters logic + neighbors + face
@@ -127,20 +121,10 @@ const isSelectableLetter = (letters, neighbors, face) => {
   )
 }
 
-const isHighlightedFace = (mode, face, index, sorted, sortedByCuboidFace) => {
-  switch (mode) {
-    case CUBOID_FACE_MODE:
-      return sortedByCuboidFace.indexOf(face) < 21
-    case DICE_FACE_MODE:
-      return index === sorted.length - 1
-    default:
-      return false
-  }
-}
-
 // game.loop
 const step = () => {
-  element.getContext('2d').clearRect(0, 0, 400, 400)
+  const neighbors = letters.last ? NEIGHBORS[letters.last.index] : []
+  const isSelecting = letters.word.length
 
   faces.forEach((face, index) => {
     if (camera.isPanning(UP)) face.rotateX(ROTATE_SPEED, 1)
@@ -149,39 +133,14 @@ const step = () => {
     if (camera.isPanning(RIGHT)) face.rotateY(ROTATE_SPEED, -1)
   })
 
-  // only recompute when panning
-  const sorted = stableSort(faces, (a, b) => {
-    const adist = a.center.subtract(camera.position).magnitude
-    const bdist = b.center.subtract(camera.position).magnitude
-
-    return numCompare(bdist, adist)
-  })
-
-  // modes cuboid face or die face
-  // face highlighting
-  // may only need to be recomputed on every turn
-  const cuboidFaceCenterIndex = (selectedCuboidFace * 9) + 4
-  const cuboidFaceCenter = faces[cuboidFaceCenterIndex]
-  const sortedByCuboidFace = stableSort(faces, (a, b) => {
-    const adist = a.center.subtract(cuboidFaceCenter.center).magnitude
-    const bdist = b.center.subtract(cuboidFaceCenter.center).magnitude
-
-    return numCompare(bdist, adist)
-  })
-  // end face highlighting
-
-  let neighbors = []
-
-  if (letters.last) {
-    neighbors = NEIGHBORS[letters.last.index]
-  }
-
-  sorted.forEach((face, index) => {
-    const isSelectable = isSelectableLetter(letters, neighbors, face)
-    const isSelecting = letters.word.length
-    const isHighlighted = isHighlightedFace(mode, face, index, sorted, sortedByCuboidFace)
-
-    renderFace({ element, face, isHighlighted, isSelectable, isSelecting })
+  renderFaces({
+    element,
+    camera,
+    faces,
+    neighbors,
+    letters,
+    isSelecting,
+    isSelectableLetter
   })
 
   window.requestAnimationFrame(step)

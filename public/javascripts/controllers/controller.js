@@ -1,12 +1,18 @@
 import { INPUT_DIRECTION, RELEASE_DIRECTION, INPUT_LETTER, INPUT_WORD, CYCLE_FACE, TURN_FACE } from '../constants/events.js'
 import { LEFT, UP, RIGHT, DOWN, A, B } from '../constants/keys.js'
 
+// Copyright (c) 2019 Nathaniel Wroblewski
+// I am making my contributions/submissions to this project solely in my personal
+// capacity and am not conveying any rights to any intellectual property of any
+// third parties.
+
 class Controller {
-  constructor ({ input, letters, faces, camera }) {
+  constructor ({ input, letters, faces, camera, mode }) {
     this.input = input
     this.letters = letters
     this.faces = faces
     this.camera = camera
+    this.mode = mode
     this._on = {
       [INPUT_DIRECTION]: [],
       [RELEASE_DIRECTION]: [],
@@ -31,9 +37,8 @@ class Controller {
       case LEFT:
       case RIGHT:
         event.preventDefault()
-        // if mode === CUBOID_FACE_MODE
-        // return this.trigger(TURN_FACE, event.keyCode)
-        return this.trigger(INPUT_DIRECTION, event.keyCode)
+        const eventName = this.mode.isCuboidFaceMode ? TURN_FACE : INPUT_DIRECTION
+        return this.trigger(eventName, event.keyCode)
       case A:
         event.preventDefault()
         return this.trigger(INPUT_LETTER, this._getHighlightedFace())
@@ -43,7 +48,7 @@ class Controller {
         if (this.letters.word.length) {
           return this.trigger(INPUT_WORD, this.letters.word)
         } else {
-          return this.trigger(CYCLE_FACE)
+          // return this.trigger(CYCLE_FACE)
         }
     }
   }

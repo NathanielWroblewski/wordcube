@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2019 Nathaniel Wroblewski
+ * I am making my contributions/submissions to this project solely in my personal
+ * capacity and am not conveying any rights to any intellectual property of any
+ * third parties.
+**/
+
 html {
   font-size: 15px;
 }
@@ -42,8 +49,6 @@ html, body {
   line-height: 2rem;
 }
 
-a:link, a:visited { color: inherit; }
-
 .game-container {
   position: relative;
 }
@@ -53,28 +58,6 @@ a:link, a:visited { color: inherit; }
   width: 400px;
   background-color: #eee;
 }
-
-/*.links {
-  margin: 0;
-  padding: 10px 0 0;
-  list-style: none;
-}
-
-.link {
-  width: 100%;
-  vertical-align: baseline;
-  font-size: 1.4rem;
-  line-height: 2rem;
-  color: #aaa;
-}
-
-.link a {
-  text-decoration: none;
-}
-
-.link:hover {
-  color: #666;
-}*/
 
 .timer, .points {
   position: absolute;
@@ -121,7 +104,7 @@ a:link, a:visited { color: inherit; }
 }
 
 table {
-  margin-top: 1em;
+  margin-top: 0.5em;
 }
 
 th, td {

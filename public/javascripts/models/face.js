@@ -1,11 +1,15 @@
 import Vector from './vector.js'
-import { place, stableSort, numCompare } from '../utilities/index.js'
+import { place } from '../utilities/index.js'
+
+// Copyright (c) 2019 Nathaniel Wroblewski
+// I am making my contributions/submissions to this project solely in my personal
+// capacity and am not conveying any rights to any intellectual property of any
+// third parties.
 
 class Face {
   constructor ({ vertices, letter }) {
     this.vertices = vertices
     this.letter = letter
-    this.highlighted = false
   }
 
   rotateX (radians, direction) {
@@ -45,14 +49,6 @@ class Face {
         vertex.z,
       ])
     })
-  }
-
-  select (vector) {
-    this.highlighted = true
-  }
-
-  deselect (vector) {
-    this.highlighted = false
   }
 
   get center () {

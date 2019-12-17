@@ -1,5 +1,10 @@
 import Vector from '../models/vector.js'
 
+// Copyright (c) 2019 Nathaniel Wroblewski
+// I am making my contributions/submissions to this project solely in my personal
+// capacity and am not conveying any rights to any intellectual property of any
+// third parties.
+
 const height = 400
 const width = 400
 const halfheight = height / 2
